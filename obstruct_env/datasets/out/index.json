@@ -1,0 +1,24 @@
+[
+  {
+    "map_id": "map_00001",
+    "file": "obstruct_env/datasets/out/dataset/map_00001.npz",
+    "grid_res": 0.2,
+    "map_size": [
+      20.0,
+      20.0,
+      10.0
+    ],
+    "tasks": 5
+  },
+  {
+    "map_id": "map_00002",
+    "file": "obstruct_env/datasets/out/dataset/map_00002.npz",
+    "grid_res": 0.2,
+    "map_size": [
+      20.0,
+      20.0,
+      10.0
+    ],
+    "tasks": 5
+  }
+]

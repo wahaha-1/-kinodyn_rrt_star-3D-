@@ -1,0 +1,40 @@
+# 规划任务配置（示例）
+map:
+  # 使用基路径（不带后缀），程序会尝试读取 <base>_occ.npy 与可选 <base>_esdf.npy
+  base: /home/workspace/Desktop/kinodynamic/obstruct_env/examples/scenes/generated
+  grid_res: 0.2
+
+start:
+  position: [1.0, 1.0, 1.0]
+  velocity: [0.0, 0.0, 0.0]
+  acceleration: [0.0, 0.0, 0.0]
+
+goal:
+  # 注意：C++ 侧坐标原点在地图中心，尺寸 20x20x10 m 则有效范围约为 x,y∈[-10,10], z∈[-5,5]
+  position: [8.0, 8.0, 2.0]
+  tolerance: 0.2
+  velocity: [0.0, 0.0, 0.0]
+  acceleration: [0.0, 0.0, 0.0]
+
+planner:
+  step: 1.0
+  time_limit: 5.0
+  max_iters: 5000
+  stop_on_first: true
+  inflate: 0.5           # 使用 ESDF 硬安全距离；若无 ESDF 可设 0.0
+  safety_margin: 0.6      # ESDF 软安全边界（米）
+  safety_weight: 1.0      # 软安全代价值权重
+
+sampling:
+  dt: 0.05  # 轨迹采样时间步长（秒）
+
+terminal:
+  enforce_zero_velocity: false  # 默认由 C++ 终端速度/加速度约束保证停稳；如需冗余保险可开启
+  max_acc: 2.0                  # 刹车段最大加速度（近似估算）
+  min_time: 0.5                 # 刹车段最小时间（秒）
+  max_time: 2.0                 # 刹车段最大时间（秒）
+  velocity_tol: 0.05            # 认为已为零的速度阈值（m/s）
+
+output:
+  npz: /home/workspace/Desktop/kinodynamic/obstruct_env/examples/scenes/generated_traj.npz
+  json: /home/workspace/Desktop/kinodynamic/obstruct_env/examples/scenes/generated_traj.json

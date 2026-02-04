@@ -1,0 +1,28 @@
+# 可视化参数文件（支持同时加载 .npz 场景与 .npy 双文件）
+# 运行：python3 -m obstruct_env.visualization.environment_visualizer --config obstruct_env/config/visualize.yaml
+
+sources:
+  # 直接给出 .npz 场景文件（ObstacleMapGenerator.save() 的输出）
+  npz_files:
+    - obstruct_env/examples/scenes/scene_yaml.npz
+    # - obstruct_env/examples/scenes/another_scene.npz
+
+  # 给出 .npy 的基路径（不带后缀），会自动找 *_occ.npy 和 *_esdf.npy
+  npy_bases:
+    - obstruct_env/examples/scenes/scene_yaml
+    # - obstruct_env/examples/scenes/forest_scene
+
+  # 扫描文件夹（可选），支持 npz 或 npy 两种类型
+  folders:
+    # - { dir: obstruct_env/examples/scenes, type: npz, pattern: "*.npz" }
+    # - { dir: obstruct_env/examples/scenes, type: npy, pattern: "*_occ.npy", grid_res: 0.2 }
+
+  # 若 .npy 没有单独配置 grid_res，则使用这里的默认值
+  grid_res_default: 0.2
+
+views:
+  slice_heights: [1.0, 3.0, 5.0]  # 2D 切片的 z 高度列表 (m)
+  show_voxels: true               # 是否绘制 3D 体素图
+  downsample: 1                   # 体素下采样步长（>1 可加速）
+  show_obstacles: true            # 若有障碍物元数据，是否绘制 3D 障碍物
+  save_dir: obstruct_env/examples/visualizations  # 输出图片文件夹（为空则只弹窗显示）

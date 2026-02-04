@@ -1,0 +1,58 @@
+# 数据集默认配置
+
+dataset:
+  # 输出根目录，包含 maps/ 与 dataset/ 子目录
+  output_dir: obstruct_env/datasets/out
+  # 要生成的地图数量；每张地图会生成独立的 map_XXXXX.npz
+  num_maps: 1
+  # 每张地图要成功保存的任务/路径数量
+  tasks_per_map: 5
+  # 可选：设置后保证可复现；不填则采用系统随机种子
+  seed: 2025
+
+map:
+  size: [20.0, 20.0, 10.0]      # 地图物理尺寸 (x, y, z) 单位米
+  resolution: 0.2               # 栅格分辨率（米/格）
+  environment: city             # city|buildings|forest|custom，决定几何生成器
+  # 支持固定值、范围 [min,max] 或离散列表 [a,b,c]
+  boxes:
+    count: [10, 20]             # 长方体数量
+    size_range: [2.0, 5.0]      # 边长范围
+  buildings:
+    # “楼宇”仅使用长方体，且底面落在地面 (z=0)，并在 XY 平面留出最小间距（类似街道）
+    count: [15, 30]
+    footprint_range: [2.0, 6.0]         # 底面边长范围（米），x/y 独立采样
+    height_range: [3.0, 10.0]           # 高度范围（米）
+    min_gap: 1.0                        # 建筑之间最小间距（米）
+    boundary_margin: 1.0                # 与地图边界的最小距离（米）
+    max_tries_per_building: 200         # 单栋建筑采样重试上限
+  spheres:
+    count: [6, 12]
+    radius_range: [0.6, 2.0]
+  cylinders:
+    count: [5, 10]
+    radius_range: [0.4, 1.2]
+    height_range: [2.0, 6.0]
+
+planner:
+  # 支持数值、范围 [min,max]、列表或 {dist:uniform,min:..,max:..}
+  step: [0.6, 1.4]              # 采样/树扩展步长（米）
+  time_limit: [3.0, 8.0]        # 每次规划允许的时间上限（秒）
+  max_iters: [3000, 8000]       # 迭代次数上限
+  stop_on_first: true           # 是否找到首条可行解就停止
+  inflate: [0.3, 0.8]           # 硬安全距离（米，清空障碍）
+  safety_margin: [0.4, 1.0]     # ESDF 安全缓冲（米）
+  safety_weight: [0.5, 2.0]     # 软安全代价权重基线
+  goal_tolerance: [0.01, 0.001]   # 目标位置容差（米）
+
+sampling:
+  dt: 0.05                      # 轨迹离散采样间隔（秒）
+
+# 起终点采样约束与任务偏好
+task:
+  min_distance: [10.0, 20.0]      # 起终点最小直线距离（米）
+  min_clearance: [0.8, 1.5]     # 采样点最小清距（米）
+  max_tries: 200                # 单点采样最大重试次数
+  preferences:
+    # 每个任务再随机扰动安全权重，乘在 planner.safety_weight 上
+    safety_weight_range: [0.5, 2.0]

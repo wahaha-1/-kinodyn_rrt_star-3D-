@@ -1,0 +1,2 @@
+/usr/bin/ar qc libkinodyn_rrt_star.a CMakeFiles/kinodyn_rrt_star.dir/src/kinodyn_rrt_star.cpp.o CMakeFiles/kinodyn_rrt_star.dir/src/kdtree.cpp.o
+/usr/bin/ranlib libkinodyn_rrt_star.a
